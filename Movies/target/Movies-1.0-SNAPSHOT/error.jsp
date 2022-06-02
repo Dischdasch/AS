@@ -12,10 +12,11 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
-<%@ page isErrorPage="true" %>
-
-<h3>Sorry an exception occured!</h3>
+<div class="content">
+    <%@ page isErrorPage="true" %>
+    <h3>Sorry an exception occured!</h3>
 
 Exception is: <%= exception %>
+</div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <%@ page import="com.example.classes.CartBean" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.classes.ShoppingCart" %><%--
+<%@ page import="com.example.classes.ShoppingCart" %>
+<%@ page import="java.util.Set" %><%--
   Created by IntelliJ IDEA.
   User: blehm
   Date: 01.06.2022
@@ -17,11 +18,10 @@
 <div class="content">
     <h2>Shopping Cart</h2>
     <% ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-        List<Integer> list = cart.getContents();
-        for (int i=0;i<list.size();i++)
+        Set<Integer> contents = cart.getContents();
+        for (int movie: contents)
         {
-            out.print(list.get(i));
-
+            out.print(String.valueOf(movie));
         }%>
 </div>
 </body>

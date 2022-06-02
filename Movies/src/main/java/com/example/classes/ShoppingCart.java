@@ -1,12 +1,12 @@
 package com.example.classes;
 
-import java.util.List;
+import java.util.Set;
 
 //@Remote
 public interface ShoppingCart {
-    public ShoppingCart initialize();
-    public void addProduct(String product);
-    public void removeProduct(Movie product);
-    public List<Integer> getContents();
-    public void remove();
+    ShoppingCart initialize();
+    void addProduct(String product);
+    void removeProduct(Movie product);
+    Set<Integer> getContents();
+    void remove();
 }

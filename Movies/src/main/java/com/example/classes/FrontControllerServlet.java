@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class FrontControllerServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            final String command = (String) request.getParameter("command");
+            final String command = request.getParameter("command");
             switch (command) {
                 case "login":
                     LoginCommand.process(request, response);
