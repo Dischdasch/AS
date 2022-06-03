@@ -6,7 +6,7 @@ import java.util.Set;
 public interface ShoppingCart {
     ShoppingCart initialize();
     void addProduct(String product);
-    void removeProduct(Movie product);
+    void removeProduct(MovieEntity product);
     Set<Integer> getContents();
     void remove();
 }

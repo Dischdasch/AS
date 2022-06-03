@@ -19,7 +19,7 @@ public class CartBean implements ShoppingCart
         contents.add(toAdd);
     }
 
-    public void removeProduct(Movie product){}
+    public void removeProduct(MovieEntity product){}
 
     public Set<Integer> getContents(){
         return contents;

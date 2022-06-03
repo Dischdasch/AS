@@ -10,14 +10,14 @@ import java.util.List;
 public class MovieAccessor {
     @PersistenceUnit
     private static EntityManagerFactory emf;
-    public Movie getMovie(int userId) {
+    public MovieEntity getMovie(int userId) {
         EntityManager em = emf.createEntityManager();
-        Movie movie = em.find(Movie.class, userId);
+        MovieEntity movie = em.find(MovieEntity.class, userId);
         return movie;
     }
 
     public void setMovie(String namePassed, String descriptionPassed) {
-        Movie movie = new Movie();
+        MovieEntity movie = new MovieEntity();
         movie.setName(namePassed);
         movie.setDescription(descriptionPassed);
         EntityManager em = emf.createEntityManager();
@@ -25,10 +25,10 @@ public class MovieAccessor {
     }
 
 
-    public List<Movie> findAll() {
+    public List<MovieEntity> findAll() {
 
-        String queryString = "select e from Movie e";
+        String queryString = "select e from MovieEntity e";
         EntityManager em = emf.createEntityManager();
-        return em.createQuery(queryString, Movie.class).getResultList();
+        return em.createQuery(queryString, MovieEntity.class).getResultList();
     }
 }
