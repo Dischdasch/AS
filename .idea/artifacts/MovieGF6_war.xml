@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="MovieGF6:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>MovieGF6</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="MovieGF6-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="MovieGF6:war exploded" />
+    </root>
+  </artifact>
+</component>

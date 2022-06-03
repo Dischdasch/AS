@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -28,6 +29,7 @@ public class FrontControllerServlet extends HttpServlet {
                 case "login":
                     MovieAccessor movieA = new MovieAccessor();
                     movieA.setMovie("Back to the Future", "An Adventurous Sci-Fi Comedy");
+                    movieA.setMovie("Freedom", "A Man is Trying to Keep his Dark Secret");
                     movieA.setMovie("Joker", "A Serious Thriller based on a Comic");
                     LoginCommand.process(request, response);
                     break;
@@ -36,6 +38,9 @@ public class FrontControllerServlet extends HttpServlet {
                     break;
                 case "success":
                     SuccessCommand.process(request, response);
+                    break;
+                case "delete":
+                    DeleteCommand.process(request, response);
                     break;
                 case "details":
                     DetailsCommand.process(request, response);
@@ -106,12 +111,41 @@ public class FrontControllerServlet extends HttpServlet {
 
     static class DetailsCommand extends FrontCommand {
         public static void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            MovieAccessor movieA = new MovieAccessor();
+            request.setAttribute("movieId", movieA.getMovie(Integer.parseInt(request.getParameter("movieId"))));
+            forward("/details.jsp", request, response);
+        }
+    }
+
+    static class DeleteCommand extends FrontCommand {
+        public static void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            MovieAccessor movieA = new MovieAccessor();
+            MovieEntity movieToDelete = movieA.getMovie(Integer.parseInt(request.getParameter("delete")));
+            movieA.delete(movieToDelete);
             forward("/details.jsp", request, response);
         }
     }
 
     static class SuccessCommand extends FrontCommand {
         public static void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            MovieAccessor movieA = new MovieAccessor();
+            List<MovieEntity> movies = movieA.findAll();
+            request.setAttribute("allMovies", movies);
+            int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+            int recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage"));
+
+            int count = movies.size();
+
+            int pageNumber = count / recordsPerPage;
+
+            if (pageNumber % recordsPerPage > 0) {
+
+                pageNumber++;
+            }
+
+            request.setAttribute("pageNumber", pageNumber);
+            request.setAttribute("currentPage", currentPage);
+            request.setAttribute("recordsPerPage", recordsPerPage);
             forward("/success.jsp", request, response);
         }
     }
@@ -163,56 +197,5 @@ public class FrontControllerServlet extends HttpServlet {
             }
         }
 
-        /*static class UserCommand extends FrontCommand {
-            protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-                    throws ServletException, IOException {
-
-            }
-
-            protected void doGet(HttpServletRequest request, HttpServletResponse response)
-                    throws ServletException, IOException {
-                processRequest(request, response);
-            }
-
-            protected void doPost(HttpServletRequest request, HttpServletResponse response)
-                    throws ServletException, IOException {
-                processRequest(request, response);
-            }
-
-            public String getServletInfo() {
-                return "Short description";
-            }// </editor-fold>
-
-            public void process(HttpServletRequest request) {
-                try {
-                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                    StreamSource xslFirstStage = new StreamSource(new File("C:\\Users\\YonePC\\Videos\\ASAPLICACIONCURSOSPRACTICA1\\src\\java\\frontController\\FirstStageAlumnos.xsl"));
-                    StreamSource xslSecondStage = new StreamSource(new File("C:\\Users\\YonePC\\Videos\\ASAPLICACIONCURSOSPRACTICA1\\src\\java\\frontController\\Alumnos.xsl"));
-                    Transformer firstTransformer = transformerFactory.newTransformer(xslFirstStage);
-                    Transformer secondTransformer = transformerFactory.newTransformer(xslSecondStage);
-
-                    StreamSource xml = new StreamSource(new File("C:\\Users\\YonePC\\Videos\\ASAPLICACIONCURSOSPRACTICA1\\src\\java\\frontController\\Alumnos.xml"));
-                    PrintWriter writer = response.getWriter();
-                    Result result = new StreamResult(writer);
-
-
-                    OutputStream afterFirstStage = new FileOutputStream("C:\\Users\\YonePC\\Videos\\ASAPLICACIONCURSOSPRACTICA1\\src\\java\\frontController\\afterFirstStage.xsl");
-                    firstTransformer.transform(xml, new StreamResult(afterFirstStage));
-                    secondTransformer.transform((Source) afterFirstStage, (Result) xslSecondStage);
-                    writer.println(writer.toString());
-
-                    TransformerHandler tfh = (SAXTransformerFactory)transformerFactory.newInstance().newTransformer(xslSecondStage);
-                    tfh.setResult(new StreamResult("finalOutput.xml"));
-
-                    firstTransformer.transform(xslFirstStage, new SAXResult(tfh));
-
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                } catch (TransformerException te) {
-                    te.printStackTrace();
-
-                }
-            }
-        }*/
     }
 }

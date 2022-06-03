@@ -8,10 +8,9 @@ import jakarta.persistence.PersistenceUnit;
 import java.util.List;
 
 public class MovieAccessor {
-    @PersistenceUnit
-    private static EntityManagerFactory emf;
+    @PersistenceContext
+    private static EntityManager em;
     public MovieEntity getMovie(int userId) {
-        EntityManager em = emf.createEntityManager();
         MovieEntity movie = em.find(MovieEntity.class, userId);
         return movie;
     }
@@ -20,15 +19,20 @@ public class MovieAccessor {
         MovieEntity movie = new MovieEntity();
         movie.setName(namePassed);
         movie.setDescription(descriptionPassed);
-        EntityManager em = emf.createEntityManager();
         em.persist(movie);
     }
 
 
     public List<MovieEntity> findAll() {
-
-        String queryString = "select e from MovieEntity e";
-        EntityManager em = emf.createEntityManager();
+        String queryString = "select e from MovieEntity e order by name";
         return em.createQuery(queryString, MovieEntity.class).getResultList();
+    }
+
+    public void update(MovieEntity movie) {
+        em.merge(movie);
+    }
+
+    public void delete(MovieEntity movie) {
+        em.remove(em.contains(movie) ? movie : em.merge(movie));
     }
 }
