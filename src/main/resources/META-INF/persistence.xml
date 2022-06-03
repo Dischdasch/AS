@@ -5,5 +5,20 @@
              version="3.0">
     <persistence-unit name="default">
 
+        <class>com.example.moviegf6.Movie</class>
+        <class>com.example.moviegf6.Rating</class>
+        <class>com.example.moviegf6.Savedmovie</class>
+        <class>com.example.moviegf6.User</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/movieWeb"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="asdf"/>
+            <!--<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/movieWeb"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="asdf"/>-->
+        </properties>
     </persistence-unit>
 </persistence>

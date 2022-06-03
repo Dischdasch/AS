@@ -1,5 +1,7 @@
 package com.example.moviegf6;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -17,11 +19,16 @@ import java.util.logging.Logger;
 
 @WebServlet(name = "FrontControllerServlet", value = "/FrontControllerServlet")
 public class FrontControllerServlet extends HttpServlet {
+    @PersistenceContext
+    EntityManager em;
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             final String command = request.getParameter("command");
             switch (command) {
                 case "login":
+                    MovieAccessor movieA = new MovieAccessor();
+                    movieA.setMovie("Back to the Future", "An Adventurous Sci-Fi Comedy");
+                    movieA.setMovie("Joker", "A Serious Thriller based on a Comic");
                     LoginCommand.process(request, response);
                     break;
                 case "falsePassword":
@@ -79,8 +86,6 @@ public class FrontControllerServlet extends HttpServlet {
 
     class MovieCommand extends FrontCommand {
         public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            Movie movie = Movie.find(request.getParameter("name"));
-            //request.setAttribute("helper",new ArtistHelper(art));
             forward("/movie.jsp", request, response);
         }
     }
